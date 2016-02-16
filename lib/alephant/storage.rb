@@ -1,9 +1,9 @@
-require 'alephant/cache/version'
+require 'alephant/storage/version'
 require 'alephant/logger'
 require 'aws-sdk'
 
 module Alephant
-  class Cache
+  class Storage
     include Logger
     attr_reader :id, :bucket, :path
 
@@ -13,7 +13,7 @@ module Alephant
       @bucket = AWS::S3.new.buckets[id]
 
       logger.info(
-        "event"  => "CacheInitialized",
+        "event"  => "StorageInitialized",
         "id"     => id,
         "path"   => path,
         "method" => "#{self.class}#initialize",
@@ -23,7 +23,7 @@ module Alephant
     def clear
       bucket.objects.with_prefix(path).delete_all
       logger.info(
-        "event"  => "CacheCleared",
+        "event"  => "StorageCleared",
         "path"   => path,
         "method" => "#{self.class}#clear"
       )
@@ -38,9 +38,9 @@ module Alephant
         }
       )
 
-      logger.metric "CachePuts"
+      logger.metric "StoragePuts"
       logger.info(
-        "event"  => "CacheObjectStored",
+        "event"  => "StorageObjectStored",
         "path"   => path,
         "id"     => id,
         "method" => "#{self.class}#put"
@@ -53,9 +53,9 @@ module Alephant
       content_type = object.content_type
       meta_data    = object.metadata.to_h
 
-      logger.metric "CacheGets"
+      logger.metric "StorageGets"
       logger.info(
-        "event"       => "CacheObjectRetrieved",
+        "event"       => "StorageObjectRetrieved",
         "path"        => path,
         "id"          => id,
         "content"     => content,
