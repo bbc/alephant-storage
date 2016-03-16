@@ -4,6 +4,6 @@ rvm:
 notifications:
   email:
     recipients:
-      - kenoir@gmail.com
+      - DigitalNewsFrameworksTeam@bbc.co.uk
     on_failure: change
     on_success: never
