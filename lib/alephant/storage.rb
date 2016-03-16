@@ -58,7 +58,6 @@ module Alephant
         "event"       => "StorageObjectRetrieved",
         "path"        => path,
         "id"          => id,
-        "content"     => content,
         "contentType" => content_type,
         "metadata"    => meta_data,
         "method"      => "#{self.class}#get"
