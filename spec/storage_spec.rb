@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'pry'
 
-describe Alephant::Cache do
+describe Alephant::Storage do
   let(:id)   { :id }
   let(:path) { :path }
   let(:data) { :data }
-  subject { Alephant::Cache }
+  subject { Alephant::Storage }
 
   describe "initialize(id, path)" do
     it "sets and exposes id, path instance variables " do

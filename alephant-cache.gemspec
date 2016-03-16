@@ -1,15 +1,15 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'alephant/cache/version'
+require 'alephant/storage/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "alephant-cache"
-  spec.version       = Alephant::Cache::VERSION
+  spec.name          = "alephant-storage"
+  spec.version       = Alephant::Storage::VERSION
   spec.authors       = ["BBC News"]
   spec.email         = ["FutureMediaNewsRubyGems@bbc.co.uk"]
   spec.summary       = "Simple abstraction layer over S3 for get/put."
-  spec.homepage      = "https://github.com/BBC-News/alephant-cache"
+  spec.homepage      = "https://github.com/BBC-News/alephant-storage"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
