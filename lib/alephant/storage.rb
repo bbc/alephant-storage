@@ -51,7 +51,7 @@ module Alephant
       object       = bucket.objects["#{path}/#{id}"]
       content      = object.read
       content_type = object.content_type
-      meta_data    = object.metadata.to_h
+      meta_data    = object.metadata.to_h.merge(add_custom_meta(object))
 
       logger.metric "StorageGets"
       logger.info(
@@ -67,6 +67,15 @@ module Alephant
         :content      => content,
         :content_type => content_type,
         :meta         => meta_data
+      }
+    end
+
+    private
+
+    def add_custom_meta(object)
+      {
+        :head_ETag            => object.etag,
+        :"head_Last-Modified" => object.last_modified
       }
     end
   end

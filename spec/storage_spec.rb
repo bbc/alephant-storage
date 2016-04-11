@@ -70,6 +70,8 @@ describe Alephant::Storage do
       expect(s3_object_collection).to receive(:read).and_return("content")
       expect(s3_object_collection).to receive(:content_type).and_return("foo/bar")
       expect(s3_object_collection).to receive(:metadata).and_return({ :foo => :bar})
+      expect(s3_object_collection).to receive(:etag).and_return("foo_123")
+      expect(s3_object_collection).to receive(:last_modified).and_return("Mon, 11 Apr 2016 10:39:57 GMT")
 
       s3_bucket = double()
       expect(s3_bucket).to receive(:objects).and_return(
@@ -84,9 +86,13 @@ describe Alephant::Storage do
       object_hash = instance.get(id)
 
       expected_hash = {
-        :content      => "content",
-        :content_type => "foo/bar",
-        :meta         => { :foo => :bar }
+        :content              => "content",
+        :content_type         => "foo/bar",
+        :meta                 => {
+          :foo                  => :bar,
+          :head_ETag            => "foo_123",
+          :"head_Last-Modified" => "Mon, 11 Apr 2016 10:39:57 GMT"
+        }
       }
 
       expect(object_hash).to eq(expected_hash)
