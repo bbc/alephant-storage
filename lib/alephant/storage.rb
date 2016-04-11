@@ -1,6 +1,6 @@
-require 'alephant/storage/version'
-require 'alephant/logger'
-require 'aws-sdk'
+require "alephant/storage/version"
+require "alephant/logger"
+require "aws-sdk"
 
 module Alephant
   class Storage
@@ -16,7 +16,7 @@ module Alephant
         "event"  => "StorageInitialized",
         "id"     => id,
         "path"   => path,
-        "method" => "#{self.class}#initialize",
+        "method" => "#{self.class}#initialize"
       )
     end
 
@@ -29,7 +29,7 @@ module Alephant
       )
     end
 
-    def put(id, data, content_type = 'text/plain', meta = {})
+    def put(id, data, content_type = "text/plain", meta = {})
       bucket.objects["#{path}/#{id}"].write(
         data,
         {
