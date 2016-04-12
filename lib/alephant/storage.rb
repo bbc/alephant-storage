@@ -1,6 +1,7 @@
 require "alephant/storage/version"
 require "alephant/logger"
 require "aws-sdk"
+require "time"
 
 module Alephant
   class Storage
@@ -75,7 +76,7 @@ module Alephant
     def add_custom_meta(object)
       {
         :head_ETag            => object.etag,
-        :"head_Last-Modified" => object.last_modified
+        :"head_Last-Modified" => Time.parse(object.last_modified).httpdate
       }
     end
   end
