@@ -1,6 +1,7 @@
-require 'alephant/storage/version'
-require 'alephant/logger'
-require 'aws-sdk'
+require "alephant/storage/version"
+require "alephant/logger"
+require "aws-sdk"
+require "date"
 
 module Alephant
   class Storage
@@ -16,7 +17,7 @@ module Alephant
         "event"  => "StorageInitialized",
         "id"     => id,
         "path"   => path,
-        "method" => "#{self.class}#initialize",
+        "method" => "#{self.class}#initialize"
       )
     end
 
@@ -29,7 +30,7 @@ module Alephant
       )
     end
 
-    def put(id, data, content_type = 'text/plain', meta = {})
+    def put(id, data, content_type = "text/plain", meta = {})
       bucket.objects["#{path}/#{id}"].write(
         data,
         {
@@ -51,7 +52,7 @@ module Alephant
       object       = bucket.objects["#{path}/#{id}"]
       content      = object.read
       content_type = object.content_type
-      meta_data    = object.metadata.to_h
+      meta_data    = object.metadata.to_h.merge(add_custom_meta(object))
 
       logger.metric "StorageGets"
       logger.info(
@@ -67,6 +68,15 @@ module Alephant
         :content      => content,
         :content_type => content_type,
         :meta         => meta_data
+      }
+    end
+
+    private
+
+    def add_custom_meta(object)
+      {
+        :head_ETag            => object.etag,
+        :"head_Last-Modified" => DateTime.parse(object.last_modified).httpdate
       }
     end
   end

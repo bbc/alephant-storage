@@ -1,5 +1,4 @@
-require 'spec_helper'
-require 'pry'
+require "spec_helper"
 
 describe Alephant::Storage do
   let(:id)   { :id }
@@ -60,7 +59,7 @@ describe Alephant::Storage do
       expect_any_instance_of(AWS::S3).to receive(:buckets).and_return({ id => s3_bucket })
       instance = subject.new(id, path)
 
-      instance.put(id, data, 'foo/bar')
+      instance.put(id, data, "foo/bar")
     end
   end
 
@@ -68,8 +67,10 @@ describe Alephant::Storage do
     it "gets bucket path/id content data" do
       s3_object_collection = double()
       expect(s3_object_collection).to receive(:read).and_return("content")
-      expect(s3_object_collection).to receive(:content_type).and_return("foo/bar")
-      expect(s3_object_collection).to receive(:metadata).and_return({ :foo => :bar})
+      expect(s3_object_collection).to receive(:content_type).and_return("foo/bar" )
+      expect(s3_object_collection).to receive(:metadata).and_return({ :foo => :bar })
+      expect(s3_object_collection).to receive(:etag).and_return("foo_123")
+      expect(s3_object_collection).to receive(:last_modified).and_return("2016-04-11 10:39:57 +0000")
 
       s3_bucket = double()
       expect(s3_bucket).to receive(:objects).and_return(
@@ -86,11 +87,14 @@ describe Alephant::Storage do
       expected_hash = {
         :content      => "content",
         :content_type => "foo/bar",
-        :meta         => { :foo => :bar }
+        :meta         => {
+          :foo                  => :bar,
+          :head_ETag            => "foo_123",
+          :"head_Last-Modified" => "Mon, 11 Apr 2016 10:39:57 GMT"
+        }
       }
 
       expect(object_hash).to eq(expected_hash)
     end
   end
 end
-
