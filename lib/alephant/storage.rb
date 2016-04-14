@@ -76,7 +76,7 @@ module Alephant
     def add_custom_meta(object)
       {
         :head_ETag            => object.etag,
-        :"head_Last-Modified" => DateTime.parse(object.last_modified).httpdate
+        :"head_Last-Modified" => DateTime.parse(object.last_modified.to_s).httpdate
       }
     end
   end
