@@ -97,7 +97,7 @@ module Alephant
 
     def client
       options = {}
-      options.merge!({endpoint: ENV['AWS_S3_ENDPOINT']}) if ENV['AWS_S3_ENDPOINT']
+      options[:endpoint] = ENV['AWS_S3_ENDPOINT'] if ENV['AWS_S3_ENDPOINT']
       @client ||= ::Aws::S3::Client.new(options)
     end
   end
