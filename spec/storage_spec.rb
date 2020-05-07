@@ -13,6 +13,16 @@ describe Alephant::Storage do
     allow(subject).to receive(:client).and_return(fake_client)
   end
 
+  describe "override" do
+    it "defaults to false" do
+      expect(subject.send(:override_host_path?)).to eq(false)
+    end
+    it "is true if variable is set" do
+      allow(ENV).to receive(:[]).with("AWS_S3_HOST_OVERRIDE").and_return("true")
+      expect(subject.send(:override_host_path?)).to eq(true)
+    end
+  end
+
   describe "#initialize" do
     it "sets and exposes bucket, path instance variables " do
       expect(subject.bucket).to eq(bucket)
