@@ -95,9 +95,18 @@ module Alephant
       }
     end
 
+    def override_host_path?
+      ENV['AWS_S3_HOST_OVERRIDE'] == 'true'
+    end
+
+
     def client
       options = {}
       options[:endpoint] = ENV['AWS_S3_ENDPOINT'] if ENV['AWS_S3_ENDPOINT']
+      if override_host_path?
+        options[:disable_host_prefix_injection] = true
+        options[:force_path_style] = true
+      end
       @client ||= ::Aws::S3::Client.new(options)
     end
   end
